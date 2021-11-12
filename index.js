@@ -104,12 +104,46 @@ async function run() {
             res.json(result)
         })
 
+        // delete a document
+        app.delete('/allorders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await myOrders.deleteOne(query);
+            res.json(result);
+        })
+
+        // delete a document
+        app.delete('/myorders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await myOrders.deleteOne(query);
+            res.json(result);
+        })
+
+        // delete a document
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await productCollection.deleteOne(query);
+            res.json(result);
+        })
+
         // add role
         app.put('/users/admin', async (req, res) => {
             const user = req.body;
             const filter = { email: user.email }
             const updateDoc = { $set: { role: "admin" } }
             const result = await users.updateOne(filter, updateDoc);
+            res.json(result);
+        })
+
+        // update status 
+        app.put('/allorders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const updateDoc = { $set: { status: "Shipped" } }
+            const options = { upsert: true };
+            const result = await myOrders.updateOne(query, updateDoc, options);
             res.json(result);
         })
 
@@ -126,7 +160,3 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`this app listening at http://localhost:${port}`)
 })
-
-
-
-// RXplwvt8ZeCXZXhq
